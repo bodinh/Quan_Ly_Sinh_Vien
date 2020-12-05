@@ -101,11 +101,31 @@ public class ChinhSuaSinhVienActivity extends AppCompatActivity implements View.
         switch (v.getId()){
             case R.id.btn_Lưu:
                 // TODO: 12/4/2020
-                Sinhvien s = new Sinhvien(etMaSinhVien.getText().toString(),etLabelTen.getText().toString(),sinhvien.getNgaySinh(),etMaLop.getText().toString(),etEmail.getText().toString(),etsdt1.getText().toString(),etsdt2.getText().toString(),etQueQuan.getText().toString(),etChoOHientai.getText().toString());
-                Intent intent=new Intent(ChinhSuaSinhVienActivity.this,SinhVienActivity.class);
-                intent.putExtra("sinhvienresult",(Serializable) s);
-                setResult(Activity.RESULT_OK,intent);
-                finish();
+                if (etLabelTen.getText().toString().trim().length() == 0) {
+                    etLabelTen.setHint("Vui lòng nhập tên sinh viên");
+                    etLabelTen.setError("Vui lòng nhập tên sinh viên");
+                } else if (etMaLop.getText().toString().trim().length() == 0) {
+                    etMaLop.setHint("Vui lòng nhập mã lớp");
+                    etMaLop.setError("Vui lòng nhập mã lớp");
+                } else if (etEmail.getText().toString().trim().length() == 0) {
+                    etEmail.setHint("Vui lòng nhập email");
+                    etEmail.setError("Vui lòng nhập email");
+                } else if (etsdt1.getText().toString().trim().length() == 0) {
+                    etsdt1.setHint("Vui lòng nhập số điện thoại ");
+                    etsdt1.setError("Vui lòng nhập số điện thoại");
+                }else if (etQueQuan.getText().toString().trim().length() == 0) {
+                    etQueQuan.setHint("Vui lòng nhập quê quán");
+                    etQueQuan.setError("Vui lòng nhập quê quán");
+                } else if (etChoOHientai.getText().toString().trim().length() == 0) {
+                    etChoOHientai.setHint("Vui lòng nhập chỗ ở hiện tại");
+                    etChoOHientai.setError("Vui lòng nhập chỗ ở hiện tại");
+                }else {
+                    Sinhvien s = new Sinhvien(etMaSinhVien.getText().toString(),etLabelTen.getText().toString(),sinhvien.getNgaySinh(),etMaLop.getText().toString(),etEmail.getText().toString(),etsdt1.getText().toString(),etsdt2.getText().toString(),etQueQuan.getText().toString(),etChoOHientai.getText().toString());
+                    Intent intent=new Intent(ChinhSuaSinhVienActivity.this,SinhVienActivity.class);
+                    intent.putExtra("sinhvienresult",(Serializable) s);
+                    setResult(Activity.RESULT_OK,intent);
+                    finish();
+                }
                 break;
             case R.id.btn_quaylai:
                 // TODO: 12/4/2020

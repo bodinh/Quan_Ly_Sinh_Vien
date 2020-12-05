@@ -1,10 +1,12 @@
 package com.example.qunlsinhvin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +31,18 @@ public class ChinhSuaLopActivity extends AppCompatActivity implements View.OnCli
 
         setView();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setView() {
@@ -58,11 +72,22 @@ public class ChinhSuaLopActivity extends AppCompatActivity implements View.OnCli
         switch (v.getId()){
             case R.id.btn_luu:
                 // TODO: 12/5/2020
-                Lop l = new Lop(etMaLop.getText().toString(),etTenLop.getText().toString(),etKhoaHoc.getText().toString(),etMaKhoa.getText().toString());
-                Intent intent=new Intent(ChinhSuaLopActivity.this,ThongTinLopActivity.class);
-                intent.putExtra("lopresult",(Serializable) l);
-                setResult(Activity.RESULT_OK,intent);
-                finish();
+                if(etTenLop.getText().toString().trim().length() ==0){
+                    etTenLop.setHint("Vui lòng nhập tên lớp");
+                    etTenLop.setError("Vui lòng nhập tên lớp");
+                }else if(etKhoaHoc.getText().toString().trim().length() ==0){
+                    etKhoaHoc.setHint("Vui lòng nhập khoá học");
+                    etKhoaHoc.setError("Vui lòng nhập khoá học");
+                }else if(etMaKhoa.getText().toString().trim().length() ==0){
+                    etMaKhoa.setHint("Vui lòng nhập mã khoa");
+                    etMaKhoa.setError("Vui lòng nhập mã khoa");
+                }else {
+                    Lop l = new Lop(etMaLop.getText().toString(),etTenLop.getText().toString(),etKhoaHoc.getText().toString(),etMaKhoa.getText().toString());
+                    Intent intent=new Intent(ChinhSuaLopActivity.this,ThongTinLopActivity.class);
+                    intent.putExtra("lopresult",(Serializable) l);
+                    setResult(Activity.RESULT_OK,intent);
+                    finish();
+                }
                 break;
             case R.id.btn_quaylai:
                 // TODO: 12/5/2020
