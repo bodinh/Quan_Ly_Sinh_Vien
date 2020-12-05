@@ -30,6 +30,7 @@ public class ThemMoiSinhVienActivity extends AppCompatActivity implements View.O
 
 
     Sinhvien sinhvien;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +49,7 @@ public class ThemMoiSinhVienActivity extends AppCompatActivity implements View.O
         etMaLop = (EditText) findViewById(R.id.et_malop);
         String ml = (String) getIntent().getStringExtra("maLop");
         String tl = (String) getIntent().getStringExtra("tenLop");
-        if(ml != null){
+        if (ml != null) {
             getSupportActionBar().setTitle(tl);
             etMaLop.setText(ml);
             etMaLop.setEnabled(true);
@@ -63,7 +64,7 @@ public class ThemMoiSinhVienActivity extends AppCompatActivity implements View.O
         etNgaySinh = (EditText) findViewById(R.id.et_ngaysinh);
         etNgaySinh.setFocusable(false);
         etNgaySinh.setEnabled(true);
-        etNgaySinh.setText("__"+"/"+"__"+"/"+"____");
+        etNgaySinh.setText("dd" + "/" + "MM" + "/" + "yyyy");
 
 
         etQueQuan = (EditText) findViewById(R.id.et_quequan);
@@ -101,17 +102,17 @@ public class ThemMoiSinhVienActivity extends AppCompatActivity implements View.O
                 validateInput();
                 break;
             case R.id.et_ngaysinh:
-                final Calendar calendar=Calendar.getInstance();
-                DatePickerDialog datePickerDialog=new DatePickerDialog(ThemMoiSinhVienActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                final Calendar calendar = Calendar.getInstance();
+                DatePickerDialog datePickerDialog = new DatePickerDialog(ThemMoiSinhVienActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                                 sinhvien = new Sinhvien();
-                                calendar.set(year,month,dayOfMonth);
+                                calendar.set(year, month, dayOfMonth);
                                 sinhvien.setNgaySinh(calendar.getTime());
-                                etNgaySinh.setText(dayOfMonth+"/"+(month+1)+"/"+year);
+                                etNgaySinh.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
                             }
-                        },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+                        }, (calendar.get(Calendar.YEAR) - 17), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 datePickerDialog.show();
                 break;
@@ -121,6 +122,9 @@ public class ThemMoiSinhVienActivity extends AppCompatActivity implements View.O
     }
 
     private void validateInput() {
+        if (!etNgaySinh.getText().toString().equals("dd/MM/yyyy")) {
+            etNgaySinh.setError(null);
+        }
         if (etLabelTen.getText().toString().trim().length() == 0) {
             etLabelTen.setHint("Vui lòng nhập tên sinh viên");
             etLabelTen.setError("Vui lòng nhập tên sinh viên");
@@ -136,36 +140,35 @@ public class ThemMoiSinhVienActivity extends AppCompatActivity implements View.O
         } else if (etsdt1.getText().toString().trim().length() == 0) {
             etsdt1.setHint("Vui lòng nhập số điện thoại ");
             etsdt1.setError("Vui lòng nhập số điện thoại");
-        } else if (etNgaySinh.getText().toString().trim().length() == 0) {
-            etNgaySinh.setHint("Vui lòng nhập tên sinh viên");
-            etNgaySinh.setError("Vui lòng nhập tên sinh viên");
+        } else if (etNgaySinh.getText().toString().equals("dd/MM/yyyy")) {
+            etNgaySinh.setError("Vui lòng nhập ngày sinh");
         } else if (etQueQuan.getText().toString().trim().length() == 0) {
             etQueQuan.setHint("Vui lòng nhập quê quán");
             etQueQuan.setError("Vui lòng nhập quê quán");
         } else if (etChoOHientai.getText().toString().trim().length() == 0) {
             etChoOHientai.setHint("Vui lòng nhập chỗ ở hiện tại");
             etChoOHientai.setError("Vui lòng nhập chỗ ở hiện tại");
-        }else {
-            if(database.QueryGetData("select * from SinhVienTab where maSinhVien ='"+etMaSinhVien.getText().toString()+"'").getCount() > 0 ){
+        } else {
+            if (database.QueryGetData("select * from SinhVienTab where maSinhVien ='" + etMaSinhVien.getText().toString() + "'").getCount() > 0) {
                 Toast.makeText(this, "Sinh viên đã tồn tại trong hệ thống", Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
                 try {
-                    Calendar calendar=Calendar.getInstance();
+                    Calendar calendar = Calendar.getInstance();
                     calendar.setTime(sinhvien.getNgaySinh());
-                    String d = calendar.get(Calendar.YEAR)+ "-" +(calendar.get(Calendar.MONTH)+1) + "-"+ calendar.get(Calendar.DAY_OF_MONTH);
-                    database.Query("Insert into SinhVienTab values('"+etMaSinhVien.getText().toString()+"','"+etLabelTen.getText().toString()+"','"+d+"','"+etMaLop.getText().toString()+"','"+etEmail.getText().toString()+"','"+etsdt1.getText().toString()+"','"+etsdt2.getText().toString()+"','"+etQueQuan.getText().toString()+"','"+etChoOHientai.getText().toString()+"')");
+                    String d = calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+                    database.Query("Insert into SinhVienTab values('" + etMaSinhVien.getText().toString() + "','" + etLabelTen.getText().toString() + "','" + d + "','" + etMaLop.getText().toString() + "','" + etEmail.getText().toString() + "','" + etsdt1.getText().toString() + "','" + etsdt2.getText().toString() + "','" + etQueQuan.getText().toString() + "','" + etChoOHientai.getText().toString() + "')");
                     finish();
-                }catch (SQLiteConstraintException e){
+                } catch (SQLiteConstraintException e) {
                     new AlertDialog.Builder(ThemMoiSinhVienActivity.this)
                             .setTitle("Thông báo")
                             .setMessage("Lớp học chưa tồn tại\nBạn có muốn tạo lớp học mới ??")
                             .setIcon(R.drawable.ic_baseline_warning_24)
-                            .setNegativeButton("No",null)
+                            .setNegativeButton("No", null)
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent=new Intent(ThemMoiSinhVienActivity.this,ThemMoiLopActivity.class);
-                                    intent.putExtra("maLop",etMaLop.getText().toString());
+                                    Intent intent = new Intent(ThemMoiSinhVienActivity.this, ThemMoiLopActivity.class);
+                                    intent.putExtra("maLop", etMaLop.getText().toString());
                                     startActivity(intent);
                                 }
                             })
