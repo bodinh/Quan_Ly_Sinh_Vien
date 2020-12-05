@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:icon="@drawable/ic_baseline_search_24" app:showAsAction="always|collapseActionView" app:actionViewClass="androidx.appcompat.widget.SearchView" android:id="@+id/search"
+        android:title=""></item>
+    <item android:icon="@drawable/ic_baseline_details_24" android:id="@+id/themmoisinhvien" android:title="Thêm mới sinh viên vào lớp" ></item>
+
+    <item android:icon="@drawable/ic_baseline_details_24" android:id="@+id/chitietlop" android:title="Xem thông tin lớp" ></item>
+</menu>

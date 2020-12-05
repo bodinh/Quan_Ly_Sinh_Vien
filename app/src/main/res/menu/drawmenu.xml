@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/dslop" android:title="Danh sách lớp" android:icon="@drawable/ic_baseline_list_24"> </item>
+    <item android:id="@+id/dssinhvien" android:title="Danh sách sinh viên" android:icon="@drawable/ic_baseline_list_24"></item>
+    <group android:id="@+id/grp1" android:checkableBehavior="single" >
+        <item android:id="@+id/dangxuat" android:title="Đăng xuất" android:icon="@drawable/ic_baseline_logout" > </item>
+    </group>
+</menu>
