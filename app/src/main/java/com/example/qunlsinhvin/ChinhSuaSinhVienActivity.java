@@ -143,7 +143,8 @@ public class ChinhSuaSinhVienActivity extends AppCompatActivity implements View.
                                 etNgaySinh.setText(dayOfMonth+"/"+(month+1)+"/"+year);
                             }
                         },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                 datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 536468184000L); //cài maxDate cho dateapickerTime - L : Long
                 datePickerDialog.show();
                 // TODO: 12/4/2020
                 break;

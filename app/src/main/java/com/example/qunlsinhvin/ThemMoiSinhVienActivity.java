@@ -114,6 +114,7 @@ public class ThemMoiSinhVienActivity extends AppCompatActivity implements View.O
                             }
                         }, (calendar.get(Calendar.YEAR) - 17), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 536468184000L); //cài maxDate cho dateapickerTime -  L : Long
                 datePickerDialog.show();
                 break;
             default:
