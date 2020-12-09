@@ -6,40 +6,71 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.qunlsinhvin.Database.Database;
+import com.example.qunlsinhvin.Model.Lop;
 import com.example.qunlsinhvin.Model.Sinhvien;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class ChinhSuaSinhVienActivity extends AppCompatActivity implements View.OnClickListener {
-    private EditText etLabelTen,etMaSinhVien,etMaLop,etEmail,etsdt1,etsdt2,etNgaySinh,etQueQuan,etChoOHientai;
+    private EditText etLabelTen,etMaSinhVien,etEmail,etsdt1,etsdt2,etNgaySinh,etQueQuan,etChoOHientai;
+    private AutoCompleteTextView etMaLop;
     private Button btnLuu,btnQuayLai;
     Sinhvien sinhvien;
+    private List<String> stringsMaLop;
+
+    Database database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chinh_sua_sinh_vien);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Chỉnh sửa thông tin sinh viên");
+        database = new Database(ChinhSuaSinhVienActivity.this, "DaoTaoDB", null, 1);
+        database.Query("PRAGMA foreign_keys = ON;");
+
 
         initView();
-        sinhvien = (Sinhvien) getIntent().getSerializableExtra("sinhvien");
-        setView(sinhvien);
+
+        getLopSinhVien();
+
+        setView();
     }
 
-    private void setView(Sinhvien sinhvien) {
+    private void getLopSinhVien() {
+        sinhvien = (Sinhvien) getIntent().getSerializableExtra("sinhvien");
+        Cursor cursor =database.QueryGetData("select * from LopTab");
+        if(cursor.getCount() > 0){
+            stringsMaLop = new ArrayList<>();
+            cursor.moveToFirst();
+            do{
+                stringsMaLop.add(cursor.getString(0).toString() + " - " +cursor.getString(1).toString());
+            }while (cursor.moveToNext());
+            ArrayAdapter<String> adapter =
+                    new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, stringsMaLop);
+            etMaLop.setAdapter(adapter);
+        }
+    }
+
+    private void setView() {
         etLabelTen.setText(sinhvien.getTenSinhVien());
         etMaSinhVien.setText(sinhvien.getMaSinhVien());
         etMaLop.setText(sinhvien.getMaLop());
@@ -67,7 +98,7 @@ public class ChinhSuaSinhVienActivity extends AppCompatActivity implements View.
         etLabelTen = (EditText) findViewById(R.id.et_tensinhvien);
         etMaSinhVien = (EditText) findViewById(R.id.et_masinhvien);
         etMaSinhVien.setEnabled(false);
-        etMaLop = (EditText) findViewById(R.id.et_malop);
+        etMaLop = (AutoCompleteTextView) findViewById(R.id.et_malop);
         etEmail = (EditText) findViewById(R.id.et_email);
         etsdt1 = (EditText) findViewById(R.id.et_sodienthoai1);
         etsdt2 = (EditText) findViewById(R.id.et_sodienthoai2);
@@ -107,6 +138,9 @@ public class ChinhSuaSinhVienActivity extends AppCompatActivity implements View.
                 } else if (etMaLop.getText().toString().trim().length() == 0) {
                     etMaLop.setHint("Vui lòng nhập mã lớp");
                     etMaLop.setError("Vui lòng nhập mã lớp");
+                }else if(etMaLop.getText().toString().trim().length() < 6){
+                    etMaLop.setHint("Vui lòng nhập đủ 6 ký tự");
+                    etMaLop.setError("Vui lòng nhập đủ 6 ký tự");
                 } else if (etEmail.getText().toString().trim().length() == 0) {
                     etEmail.setHint("Vui lòng nhập email");
                     etEmail.setError("Vui lòng nhập email");

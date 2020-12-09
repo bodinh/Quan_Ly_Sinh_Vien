@@ -72,9 +72,12 @@ public class ThemMoiLopActivity extends AppCompatActivity implements View.OnClic
                     if(etTenLop.getText().toString().trim().length() ==0){
                         etTenLop.setHint("Vui lòng nhập tên lớp");
                         etTenLop.setError("Vui lòng nhập tên lớp");
-                    }else if(etMaLop.getText().toString().trim().length() ==0){
+                    }else if(etMaLop.getText().toString().trim().length() ==0 ){
                         etMaLop.setHint("Vui lòng nhập mã lớp");
                         etMaLop.setError("Vui lòng nhập mã lớp");
+                    }else if(etMaLop.getText().toString().trim().length() < 6){
+                        etMaLop.setHint("Vui lòng nhập đủ 6 ký tự");
+                        etMaLop.setError("Vui lòng nhập đủ 6 ký tự");
                     }else if(etKhoaHoc.getText().toString().trim().length() ==0){
                         etKhoaHoc.setHint("Vui lòng nhập khoá học");
                         etKhoaHoc.setError("Vui lòng nhập khoá học");

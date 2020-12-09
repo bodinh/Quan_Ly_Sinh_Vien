@@ -76,13 +76,13 @@
                         android:layout_height="wrap_content"
                         android:text="Mã lớp "
                         ></TextView>
-                    <EditText
+                    <AutoCompleteTextView
                         android:layout_weight="6"
                         android:layout_width="0dp"
                         android:maxLength="6"
                         android:layout_height="wrap_content"
                         android:id="@+id/et_malop"
-                        ></EditText>
+                        ></AutoCompleteTextView>
                 </LinearLayout>
 
                 <LinearLayout

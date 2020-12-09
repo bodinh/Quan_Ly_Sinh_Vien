@@ -7,24 +7,33 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.qunlsinhvin.Database.Database;
+import com.example.qunlsinhvin.Model.Lop;
 import com.example.qunlsinhvin.Model.Sinhvien;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class ThemMoiSinhVienActivity extends AppCompatActivity implements View.OnClickListener {
-    private EditText etLabelTen, etMaSinhVien, etMaLop, etEmail, etsdt1, etsdt2, etNgaySinh, etQueQuan, etChoOHientai;
+    private EditText etLabelTen, etMaSinhVien, etEmail, etsdt1, etsdt2, etNgaySinh, etQueQuan, etChoOHientai;
+    private AutoCompleteTextView etMaLop;
+    private List<String> stringsMaLop;
     private Button btnTaoMoi, btnHuy;
     Database database;
 
@@ -41,20 +50,40 @@ public class ThemMoiSinhVienActivity extends AppCompatActivity implements View.O
         database.Query("PRAGMA foreign_keys = ON;");
 
         initView();
+
+        setAdapterForAutocompleteTVMaLop();
+    }
+
+    private void setAdapterForAutocompleteTVMaLop() {
+        Cursor cursor =database.QueryGetData("select * from LopTab");
+        if(cursor.getCount() > 0){
+            stringsMaLop = new ArrayList<>();
+            cursor.moveToFirst();
+            do{
+                stringsMaLop.add(cursor.getString(0).toString() + " - " +cursor.getString(1).toString());
+            }while (cursor.moveToNext());
+            ArrayAdapter<String> adapter =
+                    new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, stringsMaLop);
+            etMaLop.setAdapter(adapter);
+        }
     }
 
     private void initView() {
         etLabelTen = (EditText) findViewById(R.id.et_tensinhvien);
         etMaSinhVien = (EditText) findViewById(R.id.et_masinhvien);
-        etMaLop = (EditText) findViewById(R.id.et_malop);
+        etMaLop = (AutoCompleteTextView) findViewById(R.id.et_malop);
         String ml = (String) getIntent().getStringExtra("maLop");
         String tl = (String) getIntent().getStringExtra("tenLop");
         if (ml != null) {
+            InputFilter[] fArray = new InputFilter[1];
+            fArray[0] = new InputFilter.LengthFilter(150);
+            etMaLop.setFilters(fArray);
             getSupportActionBar().setTitle(tl);
-            etMaLop.setText(ml);
-            etMaLop.setEnabled(true);
+            etMaLop.setText(ml+" - "+tl);
+            etMaLop.setEnabled(false);
             etMaLop.setFocusable(false);
         }
+        etMaLop.setThreshold(1);
 
         etEmail = (EditText) findViewById(R.id.et_email);
         etsdt1 = (EditText) findViewById(R.id.et_sodienthoai1);
@@ -78,6 +107,7 @@ public class ThemMoiSinhVienActivity extends AppCompatActivity implements View.O
         btnHuy.setOnClickListener(this);
 
         etNgaySinh.setOnClickListener(this);
+
     }
 
     @Override
@@ -135,6 +165,9 @@ public class ThemMoiSinhVienActivity extends AppCompatActivity implements View.O
         } else if (etMaLop.getText().toString().trim().length() == 0) {
             etMaLop.setHint("Vui lòng nhập mã lớp");
             etMaLop.setError("Vui lòng nhập mã lớp");
+        }else if(etMaLop.getText().toString().trim().length() < 6){
+            etMaLop.setHint("Vui lòng nhập đủ 6 ký tự");
+            etMaLop.setError("Vui lòng nhập đủ 6 ký tự");
         } else if (etEmail.getText().toString().trim().length() == 0) {
             etEmail.setHint("Vui lòng nhập email");
             etEmail.setError("Vui lòng nhập email");
