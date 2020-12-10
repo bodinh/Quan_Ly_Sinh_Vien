@@ -153,6 +153,7 @@ public class ThemMoiSinhVienActivity extends AppCompatActivity implements View.O
     }
 
     private void validateInput() {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         if (!etNgaySinh.getText().toString().equals("dd/MM/yyyy")) {
             etNgaySinh.setError(null);
         }
@@ -171,6 +172,8 @@ public class ThemMoiSinhVienActivity extends AppCompatActivity implements View.O
         } else if (etEmail.getText().toString().trim().length() == 0) {
             etEmail.setHint("Vui lòng nhập email");
             etEmail.setError("Vui lòng nhập email");
+        } else if (!etEmail.getText().toString().trim().matches(emailPattern)) {
+            etEmail.setError("Email không hợp lệ");
         } else if (etsdt1.getText().toString().trim().length() == 0) {
             etsdt1.setHint("Vui lòng nhập số điện thoại ");
             etsdt1.setError("Vui lòng nhập số điện thoại");

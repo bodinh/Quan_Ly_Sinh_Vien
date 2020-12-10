@@ -129,6 +129,7 @@ public class ChinhSuaSinhVienActivity extends AppCompatActivity implements View.
 
     @Override
     public void onClick(View v) {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         switch (v.getId()){
             case R.id.btn_Lưu:
                 // TODO: 12/4/2020
@@ -144,6 +145,8 @@ public class ChinhSuaSinhVienActivity extends AppCompatActivity implements View.
                 } else if (etEmail.getText().toString().trim().length() == 0) {
                     etEmail.setHint("Vui lòng nhập email");
                     etEmail.setError("Vui lòng nhập email");
+                } else if (!etEmail.getText().toString().trim().matches(emailPattern)) {
+                    etEmail.setError("Email không hợp lệ");
                 } else if (etsdt1.getText().toString().trim().length() == 0) {
                     etsdt1.setHint("Vui lòng nhập số điện thoại ");
                     etsdt1.setError("Vui lòng nhập số điện thoại");
