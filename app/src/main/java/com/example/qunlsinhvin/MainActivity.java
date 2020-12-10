@@ -32,6 +32,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -226,6 +227,57 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull final MenuItem item) {
+        switch (item.getItemId()){
+            case 1222:
+                if(sinhvienList != null){
+                    Sinhvien sinhvien = sinhvienList.get(item.getGroupId());
+                    Intent intent=new Intent(MainActivity.this,ChinhSuaSinhVienActivity.class);
+                    intent.putExtra("sinhvien",(Serializable) sinhvien);
+                    startActivity(intent);
+                }else {
+                    Lop lop = lopList.get(item.getGroupId());
+                    Intent intent=new Intent(MainActivity.this,ChinhSuaLopActivity.class);
+                    intent.putExtra("lop",(Serializable) lop);
+                    startActivity(intent);
+                }
+                break;
+            case 1223:
+                if(sinhvienList!= null){
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Xoá")
+                            .setMessage("Bạn có chắc muốn xoá")
+                            .setIcon(R.drawable.ic_baseline_delete_alert)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    deleteItem(item.getGroupId());
+                                }
+                            })
+                            .setNegativeButton("No", null)
+                            .show();
+                }else {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Xoá")
+                            .setMessage("Bạn có chắc muốn xoá")
+                            .setIcon(R.drawable.ic_baseline_delete_alert)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    deleteItem(item.getGroupId());
+                                }
+                            })
+                            .setNegativeButton("No", null)
+                            .show();
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 
     @Override

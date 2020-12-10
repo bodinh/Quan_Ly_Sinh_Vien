@@ -3,6 +3,7 @@ package com.example.qunlsinhvin.Adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import com.example.qunlsinhvin.R;
 import java.io.Serializable;
 import java.util.List;
 
-public class LopAdapter extends RecyclerView.Adapter<LopAdapter.ViewHolder> {
+public class LopAdapter extends RecyclerView.Adapter<LopAdapter.ViewHolder>  {
     private MainActivity context;
     private List<Lop> lopList;
 
@@ -29,7 +30,7 @@ public class LopAdapter extends RecyclerView.Adapter<LopAdapter.ViewHolder> {
         this.lopList = lopList;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
         private TextView tvTenLop,tvMaLop,tvKhoaHoc,tvMaKhoa;
 
         public ViewHolder(@NonNull View itemView) {
@@ -38,6 +39,15 @@ public class LopAdapter extends RecyclerView.Adapter<LopAdapter.ViewHolder> {
             tvMaLop = (TextView) itemView.findViewById(R.id.tv_malop);
             tvKhoaHoc = (TextView) itemView.findViewById(R.id.tv_khoahoc);
             tvMaKhoa = (TextView) itemView.findViewById(R.id.tv_makhoa);
+
+            itemView.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.setHeaderTitle("Tuỳ chọn");
+            menu.add(this.getAdapterPosition(), 1222, 0, "Chỉnh sửa");//groupId, itemId, order, title
+            menu.add(this.getAdapterPosition(), 1223, 0, "Xoá");
         }
     }
     @NonNull
@@ -53,24 +63,24 @@ public class LopAdapter extends RecyclerView.Adapter<LopAdapter.ViewHolder> {
         holder.tvMaLop.setText(lopList.get(position).getMaLop());
         holder.tvKhoaHoc.setText(lopList.get(position).getKhoaHoc());
         holder.tvMaKhoa.setText(lopList.get(position).getMaKhoa());
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                new AlertDialog.Builder(context)
-                        .setTitle("Xoá")
-                        .setMessage("Bạn có chắc muốn xoá")
-                        .setIcon(R.drawable.ic_baseline_delete_alert)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                context.deleteItem(position);
-                            }
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
-                return true;
-            }
-        });
+//        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                new AlertDialog.Builder(context)
+//                        .setTitle("Xoá")
+//                        .setMessage("Bạn có chắc muốn xoá")
+//                        .setIcon(R.drawable.ic_baseline_delete_alert)
+//                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                context.deleteItem(position);
+//                            }
+//                        })
+//                        .setNegativeButton("No", null)
+//                        .show();
+//                return true;
+//            }
+//        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

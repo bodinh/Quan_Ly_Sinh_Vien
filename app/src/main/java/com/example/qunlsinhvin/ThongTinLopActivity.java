@@ -148,7 +148,6 @@ public class ThongTinLopActivity extends AppCompatActivity implements View.OnCli
             Lop l = (Lop) data.getSerializableExtra("lopresult");
             setView(l);
 
-            database.Query("Update LopTab set tenLop='"+l.getTenLop()+"',khoaHoc = '"+l.getKhoaHoc()+"',maKhoa ='"+l.getMaKhoa()+"' ");
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

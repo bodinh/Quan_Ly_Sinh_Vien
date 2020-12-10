@@ -127,19 +127,6 @@ public class SinhVienActivity extends AppCompatActivity implements View.OnClickL
         if(requestCode==CODE_EDIT && resultCode == Activity.RESULT_OK){
             Sinhvien s =(Sinhvien) data.getSerializableExtra("sinhvienresult");
             sinhvien =s;
-            //update in data base
-            Calendar calendar=Calendar.getInstance();
-            calendar.setTime(sinhvien.getNgaySinh());
-            String d = calendar.get(Calendar.YEAR)+ "-" +(calendar.get(Calendar.MONTH)+1) + "-"+ calendar.get(Calendar.DAY_OF_MONTH);
-
-            database.Query("update SinhVienTab set tenSinhVien = '"+sinhvien.getTenSinhVien()+"'," +
-                    "ngaySinh = '"+d+"'," +
-                    "maLop = '"+sinhvien.getMaLop()+"'," +
-                    "email ='"+sinhvien.getEmail()+"'," +
-                    "soDienThoai1 ='"+sinhvien.getSoDienThoai1()+"'," +
-                    "soDienThoai2 = '"+sinhvien.getSoDienthoai2()+"'," +
-                    "queQuan ='"+sinhvien.getQueQuan()+"'," +
-                    "choOHienNay='"+sinhvien.getChoOHienNay()+"' where maSinhVien='"+sinhvien.getMaSinhVien()+"'");
             setView(s);
         }
         super.onActivityResult(requestCode, resultCode, data);

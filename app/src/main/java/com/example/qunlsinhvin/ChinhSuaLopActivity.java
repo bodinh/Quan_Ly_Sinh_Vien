@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.qunlsinhvin.Database.Database;
 import com.example.qunlsinhvin.Model.Lop;
 
 import java.io.Serializable;
@@ -20,12 +21,16 @@ public class ChinhSuaLopActivity extends AppCompatActivity implements View.OnCli
     private EditText etTenLop,etMaLop,etKhoaHoc,etMaKhoa;
     private Button btnLuu,btnQuayLai;
 
+    Database database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chinh_sua_lop);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Chỉnh sửa thông tin lớp");
+        database = new Database(ChinhSuaLopActivity.this,"DaoTaoDB",null,1);
+        database.Query("PRAGMA foreign_keys = ON;");
 
         initView();
 
@@ -83,6 +88,10 @@ public class ChinhSuaLopActivity extends AppCompatActivity implements View.OnCli
                     etMaKhoa.setError("Vui lòng nhập mã khoa");
                 }else {
                     Lop l = new Lop(etMaLop.getText().toString(),etTenLop.getText().toString(),etKhoaHoc.getText().toString(),etMaKhoa.getText().toString());
+
+                    database.Query("Update LopTab set tenLop='"+l.getTenLop()+"',khoaHoc = '"+l.getKhoaHoc()+"',maKhoa ='"+l.getMaKhoa()+"' where maLop='"+l.getMaLop()+"' ");
+
+
                     Intent intent=new Intent(ChinhSuaLopActivity.this,ThongTinLopActivity.class);
                     intent.putExtra("lopresult",(Serializable) l);
                     setResult(Activity.RESULT_OK,intent);

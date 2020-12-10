@@ -158,6 +158,21 @@ public class ChinhSuaSinhVienActivity extends AppCompatActivity implements View.
                     etChoOHientai.setError("Vui lòng nhập chỗ ở hiện tại");
                 }else {
                     Sinhvien s = new Sinhvien(etMaSinhVien.getText().toString(),etLabelTen.getText().toString(),sinhvien.getNgaySinh(),etMaLop.getText().toString(),etEmail.getText().toString(),etsdt1.getText().toString(),etsdt2.getText().toString(),etQueQuan.getText().toString(),etChoOHientai.getText().toString());
+
+                    //update in data base
+                    Calendar calendar=Calendar.getInstance();
+                    calendar.setTime(s.getNgaySinh());
+                    String d = calendar.get(Calendar.YEAR)+ "-" +(calendar.get(Calendar.MONTH)+1) + "-"+ calendar.get(Calendar.DAY_OF_MONTH);
+
+                    database.Query("update SinhVienTab set tenSinhVien = '"+s.getTenSinhVien()+"'," +
+                            "ngaySinh = '"+d+"'," +
+                            "maLop = '"+s.getMaLop()+"'," +
+                            "email ='"+s.getEmail()+"'," +
+                            "soDienThoai1 ='"+s.getSoDienThoai1()+"'," +
+                            "soDienThoai2 = '"+s.getSoDienthoai2()+"'," +
+                            "queQuan ='"+s.getQueQuan()+"'," +
+                            "choOHienNay='"+s.getChoOHienNay()+"' where maSinhVien='"+s.getMaSinhVien()+"'");
+
                     Intent intent=new Intent(ChinhSuaSinhVienActivity.this,SinhVienActivity.class);
                     intent.putExtra("sinhvienresult",(Serializable) s);
                     setResult(Activity.RESULT_OK,intent);
