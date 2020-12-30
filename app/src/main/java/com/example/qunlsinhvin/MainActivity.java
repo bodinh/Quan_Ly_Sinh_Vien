@@ -326,7 +326,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(MainActivity.this)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setIcon(R.drawable.ic_baseline_priority_high_24)
+                .setTitle("Thông báo")
+                .setMessage("Thoát ứng dụng")
+                .setNegativeButton("No",null)
+                .show();
+    }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     private void navigation() {
 
